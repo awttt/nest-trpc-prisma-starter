@@ -66,6 +66,44 @@ model Todo {
   userId    String
 }
 
+model Menu {
+  // 菜单项的唯一标识符
+  id          String   @id @default("")
+  // 菜单名称，最大长度为50
+  name        String   @db.VarChar(50)
+  // 菜单路径，最大长度为100，允许为空
+  path        String?  @db.VarChar(100)
+  // 菜单图标，最大长度为50，允许为空
+  icon        String?  @db.VarChar(50)
+  // 菜单对应的组件路径，最大长度为100，允许为空
+  component   String?  @db.VarChar(100)
+  // 菜单排序值，默认为0
+  sort        Int      @default(0)
+  // 菜单是否隐藏，默认为false
+  hidden      Boolean  @default(false)
+  // 菜单状态，默认为true
+  status      Boolean  @default(true)
+  // 菜单权限标识数组
+  permissions String[]
+  // 创建时间，默认为当前时间
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  // 更新时间，自动更新为最后修改时间
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // 物化路径字段
+  level       Int      @default(1)
+  path_ids    String[] @default([]) // 存储从根节点到当前节点的所有ID
+  path_names  String[] @default([]) // 存储从根节点到当前节点的所有名称
+  
+  // 父子关系
+  parentId    String?
+  parent      Menu?    @relation("MenuTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Menu[]   @relation("MenuTree")
+
+  @@index([path_ids])
+  @@index([level])
+}
+
 enum Role {
   Admin
   User
