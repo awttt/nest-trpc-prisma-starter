@@ -1,6 +1,6 @@
 import { PureAbility } from '@casl/ability'
 import { Subjects } from '@casl/prisma'
-import { Todo, User } from 'database'
+import { Todo, User,Menu } from 'database'
 
 export enum Action {
   Manage = 'manage',
@@ -14,6 +14,7 @@ export enum Action {
 export type PrismaSubjects = {
   User: User
   Todo: Todo
+  Menu: Menu
 }
 
 export type AppAbility = PureAbility<[Action, Subjects<PrismaSubjects>]>

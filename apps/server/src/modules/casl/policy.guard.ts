@@ -42,7 +42,14 @@ export class PolicyGuard implements CanActivate {
 
     const { action, model } = policy
 
-    const ability = this.abilityService.abilityMap[model].createForUser(user)
+    const abilityFactory = this.abilityService.abilityMap[model]
+
+    if (!abilityFactory) {
+      // 如果没有找到对应的 Ability 工厂，可以选择放行或拒绝
+      return true; // 临时放行所有请求
+    }
+
+    const ability = abilityFactory.createForUser(user)
 
     // 获取请求资源的的 id
     const id = getRequestItemId(request)

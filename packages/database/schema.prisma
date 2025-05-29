@@ -68,7 +68,7 @@ model Todo {
 
 model Menu {
   // 菜单项的唯一标识符
-  id          String   @id @default("")
+  id          String   @id @default(uuid())
   // 菜单名称，最大长度为50
   name        String   @db.VarChar(50)
   // 菜单路径，最大长度为100，允许为空

@@ -25,6 +25,7 @@ import { RedisModule } from './shared/redis/redis.module'
 import { TRPCModule } from './shared/trpc/trpc.module'
 import { SocketModule } from './socket/socket.module'
 import { TodoModule } from './modules/todo/todo.module'
+import { MenuModule } from './modules/menu/menu.module'
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { TodoModule } from './modules/todo/todo.module'
     // wait module load
     CaslModule,
     TRPCModule,
+    MenuModule,
   ],
   providers: [
 
