@@ -70,17 +70,34 @@ export default [
     ],
   },
   {
-    name: 'Todo管理',
-    icon: 'user',
-    path: '/todo',
-    component: './todo',
+    name: '系统管理',
+    icon: 'setting',
+    path: '/system',
     access: 'canAdmin',
+    routes: [
+      {
+        path: '/system',
+        redirect: '/system/user',
+      },
+      {
+        name: '用户管理',
+        icon: 'user',
+        path: '/system/user',
+        component: './user',
+      },
+      {
+        name: '菜单管理',
+        icon: 'menu',
+        path: '/system/menu',
+        component: './menu',
+      },
+    ],
   },
   {
-    name: '用户管理',
-    icon: 'user',
-    path: '/user',
-    component: './user',
+    name: 'Todo管理',
+    icon: 'check-square',
+    path: '/todo',
+    component: './todo',
     access: 'canAdmin',
   },
   {

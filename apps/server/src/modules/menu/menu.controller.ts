@@ -50,6 +50,8 @@ export class MenuController {
   @Put(':id')
   @Policy({ model: 'Menu', action: Action.Update })
   async update(@Param() { id }: IdDto, @Body() dto: MenuUpdateDto) {
+    console.log('更新菜单:', id); // 打印普通日志
+    console.log('更新菜单:', dto); // 打印普通日志
     return this.menuService.update(id, dto)
   }
 
