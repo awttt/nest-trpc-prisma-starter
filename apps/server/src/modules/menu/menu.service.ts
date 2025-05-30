@@ -31,9 +31,11 @@ export class MenuService {
 
     const [items, meta] = await this.prisma.menu.paginate({
       where,
-      orderBy: {
-        [sortBy]: sortOrder,
-      },
+      orderBy: [
+        { level: 'asc' },
+        { sort: 'asc' },
+        { createdAt: 'asc' },
+      ],
     }).withPages({
       page,
       limit,
@@ -105,8 +107,8 @@ export class MenuService {
 
     // 处理物化路径
     let level = 1
-    let path_ids: string[] = []
-    let path_names: string[] = []
+    let path_ids: string = ''
+    let path_names: string = ''
 
     // 如果有父节点，需要获取父节点信息来构建物化路径
     if (parentId) {
@@ -115,8 +117,8 @@ export class MenuService {
       })
 
       level = parent.level + 1
-      path_ids = [...parent.path_ids, parent.id]
-      path_names = [...parent.path_names, parent.name]
+      path_ids = JSON.stringify([...parent.path_ids, parent.id])
+      path_names = JSON.stringify([...parent.path_names, parent.name])
     }
 
     return this.prisma.menu.create({
@@ -136,8 +138,8 @@ export class MenuService {
     // 如果更新了parentId，需要重新计算物化路径
     if (parentId !== undefined) {
       let level = 1
-      let path_ids: string[] = []
-      let path_names: string[] = []
+      let path_ids: string = ''
+      let path_names: string = ''
 
       // 如果有父节点，需要获取父节点信息来构建物化路径
       if (parentId) {
@@ -151,8 +153,8 @@ export class MenuService {
         }
 
         level = parent.level + 1
-        path_ids = [...parent.path_ids, parent.id]
-        path_names = [...parent.path_names, parent.name]
+        path_ids = JSON.stringify([...parent.path_ids, parent.id])
+        path_names = JSON.stringify([...parent.path_names, parent.name])
       }
 
       // 更新当前节点
@@ -195,8 +197,8 @@ export class MenuService {
     // 更新每个子节点
     for (const child of children) {
       const level = parent.level + 1
-      const path_ids = [...parent.path_ids, parent.id]
-      const path_names = [...parent.path_names, parent.name]
+      const path_ids = JSON.stringify([...parent.path_ids, parent.id])
+      const path_names = JSON.stringify([...parent.path_names, parent.name])
 
       await this.prisma.menu.update({
         where: { id: child.id },

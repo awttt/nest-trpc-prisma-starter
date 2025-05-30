@@ -68,7 +68,7 @@ model Todo {
 
 model Menu {
   // 菜单项的唯一标识符
-  id          String   @id @default(uuid())
+  id          String   @id @default("")
   // 菜单名称，最大长度为50
   name        String   @db.VarChar(50)
   // 菜单路径，最大长度为100，允许为空
@@ -83,8 +83,8 @@ model Menu {
   hidden      Boolean  @default(false)
   // 菜单状态，默认为true
   status      Boolean  @default(true)
-  // 菜单权限标识数组
-  permissions String[]
+  // 菜单权限标识
+  permissions String?
   // 创建时间，默认为当前时间
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   // 更新时间，自动更新为最后修改时间
@@ -92,8 +92,8 @@ model Menu {
   
   // 物化路径字段
   level       Int      @default(1)
-  path_ids    String[] @default([]) // 存储从根节点到当前节点的所有ID
-  path_names  String[] @default([]) // 存储从根节点到当前节点的所有名称
+  path_ids    String   @default("[]") // 存储从根节点到当前节点的所有ID的JSON字符串
+  path_names  String   @default("[]") // 存储从根节点到当前节点的所有名称的JSON字符串
   
   // 父子关系
   parentId    String?

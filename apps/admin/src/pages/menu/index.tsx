@@ -145,7 +145,7 @@ const MenuList: React.FC = () => {
   // 将菜单数据转换为树形选择数据
   const convertToTreeSelect = (menus: API.MenuItem[]): any[] => {
     return menus.map((menu) => ({
-      title: menu.name,
+      label: menu.name,
       value: menu.id,
       disabled:
         currentRow?.id === menu.id ||
@@ -179,24 +179,28 @@ const MenuList: React.FC = () => {
       dataIndex: 'name',
       width: 180,
       ellipsis: true,
+      align: 'center',
     },
     {
       title: '路径',
       dataIndex: 'path',
       width: 180,
       ellipsis: true,
+      align: 'center',
     },
     {
       title: '图标',
       dataIndex: 'icon',
       width: 100,
       ellipsis: true,
+      align: 'center',
     },
     {
       title: '组件',
       dataIndex: 'component',
       width: 180,
       ellipsis: true,
+      align: 'center',
     },
     {
       title: '排序',
@@ -244,15 +248,20 @@ const MenuList: React.FC = () => {
       valueType: 'dateTime',
       width: 160,
       hideInSearch: true,
+      align: 'center',
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 160,
+      width: 120,
+      fixed: 'right',
+      align: 'center',
       render: (_, record) => [
-        <a
+        <Button
           key="update"
+          type="link"
+          size="small"
           onClick={() => {
             setCurrentRow(record);
             handleUpdateModalOpen(true);
@@ -265,9 +274,12 @@ const MenuList: React.FC = () => {
           }}
         >
           编辑
-        </a>,
-        <a
+        </Button>,
+        <Button
           key="delete"
+          type="link"
+          size="small"
+          danger
           onClick={() => {
             Modal.confirm({
               title: '确定删除该菜单吗?',
@@ -284,7 +296,7 @@ const MenuList: React.FC = () => {
           }}
         >
           删除
-        </a>,
+        </Button>,
       ],
     },
   ];
@@ -319,9 +331,19 @@ const MenuList: React.FC = () => {
         ]}
         request={queryMenu}
         columns={columns}
+        scroll={{ x: 1300 }}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
+          },
+        }}
+        pagination={{
+          defaultPageSize: 10,
+        }}
+        form={{
+          initialValues: {
+            sortBy: 'sort',
+            sortOrder: 'asc',
           },
         }}
       />

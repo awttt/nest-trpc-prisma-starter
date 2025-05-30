@@ -11,15 +11,30 @@ export async function queryMenu(
     name?: string;
     status?: boolean;
     parentId?: string;
+    sorter?: any;
   },
   options?: { [key: string]: any },
 ) {
+  // 处理排序参数
+  let sortBy = 'sort';
+  let sortOrder = 'asc';
+
+  if (params.sorter) {
+    const { field, order } = params.sorter;
+    if (field) {
+      sortBy = field;
+      sortOrder = order === 'ascend' ? 'asc' : 'desc';
+    }
+  }
+
   const result = await request<IBaseResponse<API.MenuList>>('/api/menus', {
     method: 'GET',
     params: {
       ...params,
       page: params.current,
       limit: params.pageSize,
+      sortBy,
+      sortOrder,
     },
     ...(options || {}),
   });
